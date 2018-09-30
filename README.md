@@ -36,7 +36,9 @@ interesting links:
 * https://wiki.archlinux.org/index.php/Software_access_point
 > * https://github.com/oblique/create_ap
 * https://www.instructables.com/id/Introducing-PlatformIO-for-ESP8266/
+* https://docs.platformio.org/en/latest/ide/clion.html
 > Tells how to find libraries which you wan to use in your arduino projects
+* https://medium.com/@cgrant/using-the-esp8266-wifi-module-with-arduino-uno-publishing-to-thingspeak-99fc77122e82 
 
 ### Installing libraries with platformio
 ```
