@@ -14,6 +14,10 @@
 #define LDRPin A0
 #define RL 500     # 500/lux
 
+// Temp
+#define TDPIN 3
+#define TAPIN A1
+
 // ESP 2866 WIFI
 #define RX 10
 #define TX 11
@@ -69,6 +73,7 @@ void setup() {
     Serial.begin(_baudrate);
     esp8266.begin(115200);
     pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(TDPIN, INPUT);
     sendCommand("AT", 5, "OK");
     sendCommand("AT+CWMODE=1", 5, "OK");
     sendCommand("AT+CWJAP=\"" + String(SSID) + "\",\"" + String(PASS) + "\"", 20, "OK");
@@ -80,6 +85,16 @@ float getLux() {
     return lux;
 }
 
+float getHumidity() {
+#TODO
+    return 0;
+}
+
+float getTemperature() {
+#TODO //convert to °C
+    float tmpV = analogRead (TAPIN) * (5.0 / 1023.0); //returns voltage
+    return tmpV;
+}
 
 // the loop function runs over and over again forever
 void loop() {
