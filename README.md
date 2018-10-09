@@ -76,6 +76,14 @@ ThingSpeak @ 1.3.3 has been successfully installed!
 
 ```
 
+```asm
+platformio lib -g install 1101         
+Library Storage: /home/jonas/.platformio/lib
+LibraryManager: Installing id=1101
+Downloading...
+Unpacking  [####################################]  100%
+SerialESP8266wifi @ 0bf32ed60b has been successfully installed!
+```
 
 ### Network hotspot
 ```bash
