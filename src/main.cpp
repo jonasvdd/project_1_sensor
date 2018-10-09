@@ -29,6 +29,9 @@
 //Water
 #define WtrPin 12
 
+//DHT
+#define DHTPin 8
+
 //-------------
 // Actuators
 //-------------
