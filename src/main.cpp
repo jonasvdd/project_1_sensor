@@ -9,14 +9,36 @@
 #define _baudrate 9600
 
 
-
+//-------------
+// Sensors
+//-------------
 // LDR
 #define LDRPin A0
 #define RL 500     # 500/lux
 
-// Temp
-#define TDPIN 3
-#define TAPIN A1
+// BMP
+// No pins defined, library detects sensor
+
+// Rotary encoder
+#define outputA 6
+#define outputB 7
+
+//MQ-2
+#define MQ2Pin A2
+
+//Water
+#define WtrPin 12
+
+//-------------
+// Actuators
+//-------------
+// Buzzer
+#define BuzzPin 13
+
+// RGB
+#define RPin 3
+#define GPin 4
+#define BPin 5
 
 // ESP 2866 WIFI
 #define RX 10
@@ -90,10 +112,21 @@ float getHumidity() {
     return 0;
 }
 
-float getTemperature() {
+float getTemperatureVoltage() {
 #TODO //convert to °C
     float tmpV = analogRead (TAPIN) * (5.0 / 1023.0); //returns voltage
     return tmpV;
+}
+
+float getTemperature(){
+    return getTemperatureVoltage()*1023/50;
+}
+
+int getSmoke(){
+	
+
+void buzzerAlarm(){
+
 }
 
 // the loop function runs over and over again forever
