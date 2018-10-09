@@ -1,0 +1,14 @@
+//
+// Created by jonas on 02/10/18.
+//
+
+#ifndef PROJECT_1_SENSOR_ESP8266WIFI_H
+#define PROJECT_1_SENSOR_ESP8266WIFI_H
+
+
+class ESP8266WiFi {
+
+};
+
+
+#endif //PROJECT_1_SENSOR_ESP8266WIFI_H
