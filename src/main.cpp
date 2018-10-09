@@ -20,8 +20,8 @@
 // No pins defined, library detects sensor
 
 // Rotary encoder
-#define outputA 6
-#define outputB 7
+#define outputA 2
+#define outputB 3
 
 //MQ-2
 #define MQ2Pin A2
@@ -36,9 +36,9 @@
 #define BuzzPin 13
 
 // RGB
-#define RPin 3
-#define GPin 4
-#define BPin 5
+#define RPin 5
+#define GPin 6
+#define BPin 7
 
 // ESP 2866 WIFI
 #define RX 10
