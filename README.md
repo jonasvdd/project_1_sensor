@@ -74,6 +74,28 @@ Downloading...
 Unpacking  [####################################]  100%
 ThingSpeak @ 1.3.3 has been successfully installed!
 
+platformio lib -g install 31         
+Library Storage: /home/jonas/.platformio/lib
+LibraryManager: Installing id=31
+Downloading...
+Unpacking  [####################################]  100%
+Adafruit Unified Sensor @ 1.0.2 has been successfully installed!
+
+╰ platformio lib -g install 525 
+Library Storage: /home/jonas/.platformio/lib
+LibraryManager: Installing id=525
+Downloading...
+Unpacking  [####################################]  100%
+Adafruit BMP085 Library @ 1.0.0 has been successfully installed!
+
+latformio lib -g install 16  
+Library Storage: /home/jonas/.platformio/lib
+LibraryManager: Installing id=16
+Downloading...
+Unpacking  [####################################]  100%
+Adafruit BMP085 Unified @ 1.0.0 has been successfully installed!
+
+
 ```
 
 ```asm
