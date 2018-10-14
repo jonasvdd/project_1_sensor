@@ -7,13 +7,13 @@ class AnalogSensor {
 private:
     uint8_t pin;
     uint8_t fieldID;
-
+protected:
     uint8_t getSensorValue();
 public:
     AnalogSensor(uint8_t analogPin, uint8_t fieldID);
 
     uint8_t getFieldID();
-    virtual float getNormalizedSensorValue();
+    virtual float getNormalizedSensorValue() {};
 };
 
 

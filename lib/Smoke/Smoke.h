@@ -3,13 +3,17 @@
 
 #include "AnalogSensor.h"
 
+#define SMOKE_THRESHOLD 100 // TODO 
+
 class Smoke : public AnalogSensor {
 private:
-    uint8_t field_id()
+    bool smoke_present = false;
 public:
     Smoke(uint8_t analogPin, uint8_t fieldID) : AnalogSensor(analogPin, fieldID) {}
 
     float getNormalizedSensorValue();
+
+    bool getSmokePresent();
 };
 
 
