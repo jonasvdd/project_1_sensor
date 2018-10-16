@@ -95,6 +95,12 @@ Downloading...
 Unpacking  [####################################]  100%
 Adafruit BMP085 Unified @ 1.0.0 has been successfully installed!
 
+ platformio lib -g install 1336
+Library Storage: /home/jonas/.platformio/lib
+LibraryManager: Installing id=1336
+Downloading...
+Unpacking  [####################################]  100%
+DHTlib @ 0.1.29 has been successfully installed!
 
 ```
 

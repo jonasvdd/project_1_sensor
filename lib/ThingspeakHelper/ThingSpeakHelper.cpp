@@ -49,12 +49,11 @@ void ThingSpeakHelper::sendCommand(String command, int maxTime, char readReplay[
  **********************************/
 void ThingSpeakHelper::sendSensorValue(uint8_t fieldID, String sensorValue) {
     String getData = "GET /update?api_key=" + this->API_key + "&field" + String(fieldID) + "=" + sensorValue;
-    Serial.println(getData);
     sendCommand("AT+CIPMUX=1", 5, "OK");
     sendCommand("AT+CIPSTART=0,\"TCP\",\"" + String(ROOT_URL) + "\"," + String(PORT), 15, "OK");
-    sendCommand("AT+CIPSEND=0," + String(getData.length() + 10), 10, ">");
+    sendCommand("AT+CIPSEND=0," + String(getData.length() + 4), 5, ">");
     esp8266->println(getData);
-    delay(1000);
+    Serial.println("request: " + getData);
     this->countTruecommand++;
     sendCommand("AT+CIPCLOSE=5", 10, "OK");
 }

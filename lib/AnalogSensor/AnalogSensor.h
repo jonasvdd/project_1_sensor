@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 
+
 class AnalogSensor {
 private:
     uint8_t pin;

@@ -8,7 +8,10 @@ DigitalSensor::DigitalSensor(uint8_t analogPin, uint8_t fieldID) {
     pinMode(this->pin, INPUT);
 }
 
+uint8_t DigitalSensor::getFieldID() {
+    return this->fieldID;
+}
 
 uint8_t DigitalSensor::getSensorValue() {
-    return uint8_t (digitalRead(this->pin));
+    return uint8_t(digitalRead(this->pin));
 }
