@@ -2,21 +2,17 @@
 
 /**
  * Constructor
- *
- * @param pressureID The id of the pressure field
- * @param temperatureID The id of the temperature field
- * @param altitudeID The id of the altitude field
  */
 BMP185::BMP185() {
+    // initialize the BMP
     this->bmp = new Adafruit_BMP085_Unified(10085);
 
+    // create derived class for each type of sensor
     class AltitudeSensor : public Sensor{
     private:
         BMP185 * bmp185;
     public:
-        AltitudeSensor(BMP185 * bmp185){
-            this->bmp185 = bmp185;
-        }
+        AltitudeSensor(BMP185 * bmp185) : bmp185(bmp185) {}
         float getNormalizedSensorValue (){
             return this->bmp185->getAltitude();
         }
@@ -26,10 +22,7 @@ BMP185::BMP185() {
     private:
         BMP185 * bmp185;
     public:
-        PressureSensor(BMP185 * bmp185){
-            this->bmp185 = bmp185;
-        }
-
+        PressureSensor(BMP185 * bmp185) : bmp185(bmp185) {}
         float getNormalizedSensorValue (){
             return this->bmp185->getPressure();
         }
@@ -39,14 +32,11 @@ BMP185::BMP185() {
     private:
         BMP185 * bmp185;
     public:
-        TemperatureSensor(BMP185 * bmp185){
-            this->bmp185 = bmp185;
-        }
+        TemperatureSensor(BMP185 * bmp185) : bmp185(bmp185) {}
         float getNormalizedSensorValue (){
             return this->bmp185->getTemperature();
         }
     };
-
 
     this->altitudeSensor = new AltitudeSensor(this);
     this->pressureSensor = new PressureSensor(this);
@@ -57,8 +47,11 @@ BMP185::BMP185() {
     }
 }
 
+/**
+ * @return The temperature in Celcius
+ */
 float BMP185::getTemperature(){
-    /* Get a new sensor event */
+    // Get a new sensor event
     sensors_event_t event;
     bmp->getEvent(&event);
 
@@ -71,14 +64,16 @@ float BMP185::getTemperature(){
     }
 }
 
+/**
+ * @return The air pressure in Hpa
+ */
 float BMP185::getPressure(){
-    /* Get a new sensor event */
+    // Get a new sensor event
     sensors_event_t event;
     bmp->getEvent(&event);
 
-    /* Display the results (barometric pressure is measure in hPa) */
     if (event.pressure) {
-        /* Display atmospheric pressue in kPa */
+        // Display atmospheric pressue in kPa
         float pressurehPa = event.pressure * .1;
         return pressurehPa;
     }
@@ -87,8 +82,11 @@ float BMP185::getPressure(){
     }
 }
 
+/**
+ * @return The altitude in meter
+ */
 float BMP185::getAltitude(){
-    /* Get a new sensor event */
+    // Get a new sensor event
     sensors_event_t event;
     bmp->getEvent(&event);
 
@@ -100,17 +98,4 @@ float BMP185::getAltitude(){
     } else {
         Serial.println("Sensor error!");
     }
-}
-
-
-Sensor * BMP185::getAltitudeSensor(){
-    return this->altitudeSensor;
-}
-
-Sensor * BMP185::getPressureSensor(){
-    return this->pressureSensor;
-}
-
-Sensor *  BMP185::getTemperatureSensor(){
-    this->temperatureSensor;
 }

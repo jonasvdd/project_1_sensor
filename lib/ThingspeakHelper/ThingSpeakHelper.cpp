@@ -1,23 +1,23 @@
 #include "ThingSpeakHelper.h"
-// todo led library
+
 
 /***********************************
  *          CONSTRUCTOR
  **********************************/
-ThingSpeakHelper::ThingSpeakHelper(uint8_t RX, uint8_t TX, String API_key, String SSID, String PASS) {
-    // todo include led.h
+ThingSpeakHelper::ThingSpeakHelper(RGBLed * rgbLed, uint8_t RX, uint8_t TX, String API_key, String SSID, String PASS) {
+    this->rgbLed = rgbLed;
     this->API_key = API_key;
-
     this->esp8266 = new SoftwareSerial(RX, TX);
     esp8266->begin(9600);
-    sendCommand("AT", 5, "OK");             // see if we get an OK response
-    sendCommand("AT+CWMODE=1", 5, "OK");    // static mode
+    sendCommand("AT", 5, "OK");                         // see if we get an OK response
+    sendCommand("AT+CWMODE=1", 5, "OK");                // static mode
     boolean connected = sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 20, "OK");
+    this->rgbLed->blink(Color(255, 153, 0), 500);       // ORANGE
     while (!connected){
-        // todo: blink the RGB LED orange
         Serial.println("Trying to connect ...");
         connected = sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 20, "OK");    // connect to access point
     }
+    this->rgbLed->blink(Color(0, 255, 0), 500);         // GREEN
 }
 
 
@@ -28,26 +28,26 @@ boolean ThingSpeakHelper::sendCommand(String command, int maxTime, char readRepl
     Serial.print(this->countTruecommand);
     boolean found = false;
     int countTimeCommand = 0;
-    while (this->countTimeCommand < (maxTime * 1)) {
-        this->esp8266->println(command); //at+cipsend
-        if (this->esp8266->find(readReplay))//ok
+    while (countTimeCommand < (maxTime * 1)) {
+        this->esp8266->println(command);                //at+cipsend
+        if (this->esp8266->find(readReplay))            //ok
         {
             found = true;
             break;
         }
-        this->countTimeCommand++;
+        countTimeCommand++;
     }
 
     Serial.print(".\tcommand: " + command);
     if (found) {
         Serial.println(" OK");
         this->countTruecommand++;
-        // blink led green
+        rgbLed->blink(Color(0, 0, 255), 200);           // BLUE --> OK
         return false;
     } else {
         Serial.println(" Fail");
         this->countTruecommand = 0;
-        // blink led orange
+        rgbLed->blink(Color(255, 255, 0), 200);         // RED --> OK
         return true;
     }
 }

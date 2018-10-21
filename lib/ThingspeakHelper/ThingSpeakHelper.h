@@ -2,22 +2,23 @@
 #define PROJECT_1_SENSOR_THINGSPEAKHELPER_H
 
 #include "SoftwareSerial.h"
+#include "RGBLed.h"
 #include "Arduino.h"
 
 
 /***********************************
  *          CONSTANTS
  **********************************/
-#define ROOT_URL "api.thingspeak.com"
-#define PORT 80
-
+#define ROOT_URL                "api.thingspeak.com"
+#define PORT                    80
+#define LED_UPDATE_TIME_MS      500
 
 class ThingSpeakHelper {
 private:
     String API_key;
     int countTruecommand = 0;
-    int countTimeCommand = 0;
     SoftwareSerial *esp8266;
+    RGBLed *rgbLed;
 
     /**
      * Sends a command to an ESP8266 Wifi module
@@ -32,13 +33,14 @@ public:
     /**
      * Constructor
      *
-     * @param RX The RX pin of the microcontroller
-     * @param TX  The TX pin of the microcontroller
+     * @param rgbLed will display the status of the thingspeak API
+     * @param RX The RX pin of the micro controller
+     * @param TX  The TX pin of the micro controller
      * @param API_key The API key of the thingspeak channel so we can write values to it
      * @param SSID The SSID of the network
      * @param PASS The password of the network
      */
-    ThingSpeakHelper(uint8_t RX, uint8_t TX, String API_key, String SSID, String PASS);
+    ThingSpeakHelper(RGBLed * rgbLed, uint8_t RX, uint8_t TX, String API_key, String SSID, String PASS);
 
 
     /**
