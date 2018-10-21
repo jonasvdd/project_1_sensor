@@ -15,7 +15,7 @@ public:
     /**
      * Constructor
      */
-    LDR(uint8_t analogPin, uint8_t fieldID) : AnalogSensor(analogPin, fieldID) {}
+    LDR(uint8_t analogPin) : AnalogSensor(analogPin) {}
 
     float getNormalizedSensorValue();
 };

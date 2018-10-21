@@ -5,27 +5,29 @@
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BMP085_U.h"
 #include "Arduino.h"
+#include "Sensor.h"
 
 // ANALOG 5 and analog 4
 
 #define SEA_LEVEL_PRESSURE_HPA 1020 /*IN hPa*/
+// Todo: find an API which returns the sea level height of the corresponding location.
 
 class BMP185 {
 private:
-    uint8_t altitudeID;
-    uint8_t pressureID;
-    uint8_t temperatureID;
+    Sensor * altitudeSensor;
+    Sensor * pressureSensor;
+    Sensor * temperatureSensor;
     Adafruit_BMP085_Unified * bmp;
 public:
-    BMP185(uint8_t pressureID,uint8_t temperatureID,  uint8_t altitudeID);
+    BMP185();
 
     float getTemperature();
     float getPressure();
     float getAltitude();
 
-    uint8_t getTempID();
-    uint8_t getPressureID();
-    uint8_t getAltitudeID();
+    Sensor * getAltitudeSensor();
+    Sensor * getPressureSensor();
+    Sensor * getTemperatureSensor();
 };
 
 #endif //PROJECT_1_SENSOR_BMP180_H

@@ -1,5 +1,3 @@
-// Created by jonas on 25/09/18.
-
 #include "Arduino.h"
 #include "ThingSpeakHelper.h"
 #include "LDR.h"
@@ -7,6 +5,10 @@
 #include "Smoke.h"
 #include "WaterSensor.h"
 #include "DHTSensor.h"
+#include "Sensor.h"
+#include "map"
+
+using namespace std;
 
 // HW serial
 #define _baudrate 9600
@@ -48,33 +50,32 @@ const String SSID = "Y5070AP";
 const String PASS = "ArduinoUno";
 
 // The sensors
-LDR * ldr;
-BMP185 * bmp;
-ThingSpeakHelper * apiHelper;
-Smoke * smoke;
-WaterSensor * waterSensor;
-DHTSensor * dhtSensor;
+ThingSpeakHelper *apiHelper;
+
+std::map<int, Sensor> sensorDict;
 
 void setup() {
-    pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(_baudrate);
 
-    // initialize the objects
-    ldr = new LDR(LDR_PIN, uint8_t(LDR_ID));
-    bmp = new BMP185(BMP_PRESSURE_ID, BMP_TEMPERATURE_ID, BMP_ALTITUDE_ID);
+    // create the thingspeak helper
     apiHelper = new ThingSpeakHelper(RX, TX, WRITE_KEY, SSID, PASS);
-    smoke = new Smoke(SMOKE_PIN, BUZZER_PIN, SMOKE_ID);
-    waterSensor = new WaterSensor(WATERSENSOR_PIN, WATERSENSOR_ID);
-    dhtSensor = new DHTSensor(DHT_PIN, DHT_ID);
+
+    // initialize the sensor dict
+    BMP185 * bmp = new BMP185();
+    sensorDict[BMP_PRESSURE_ID] = * bmp->getPressureSensor();
+    sensorDict[BMP_ALTITUDE_ID] = * bmp->getAltitudeSensor();
+    sensorDict[BMP_TEMPERATURE_ID] = * bmp->getTemperatureSensor();
+    sensorDict[LDR_ID] = * new LDR(LDR_PIN);
+    sensorDict[SMOKE_ID] = * new Smoke(SMOKE_PIN, BUZZER_PIN);
+    sensorDict[WATERSENSOR_ID] = * new WaterSensor(WATERSENSOR_PIN);
+    sensorDict[DHT_ID] = * new DHTSensor(DHT_PIN);
 }
 
 
 void loop() {
-    apiHelper->sendSensorValue(ldr->getFieldID(), String(ldr->getNormalizedSensorValue()));
-    apiHelper->sendSensorValue(smoke->getFieldID(), String(smoke->getNormalizedSensorValue()));
-    apiHelper->sendSensorValue(waterSensor->getFieldID(), String(waterSensor->getNormalizedSensorValue()));
-    apiHelper->sendSensorValue(bmp->getTempID(),  String(bmp->getTemperature()));
-    apiHelper->sendSensorValue(bmp->getPressureID(),  String(bmp->getPressure()));
-    apiHelper->sendSensorValue(bmp->getAltitudeID(),  String(bmp->getAltitude()));
-    apiHelper->sendSensorValue(dhtSensor->getFieldID(), String(dhtSensor->getHumidity()));
+    String datastring = "";
+    for (pair<int, Sensor> element : sensorDict) {
+        datastring +="&field" +  String(element.first) + "=" + String(element.second.getNormalizedSensorValue());
+    }
+    Serial.println(datastring);
 }

@@ -2,17 +2,24 @@
 #define PROJECT_1_SENSOR_DIGITALSENSOR_H
 
 #include "Arduino.h"
+#include "Sensor.h"
 
-class DigitalSensor {
+/**
+ * Representation of a digital sensor
+ */
+class DigitalSensor : public Sensor {
 private:
     uint8_t pin;
-    uint8_t fieldID;
 protected:
     uint8_t getSensorValue();
 public:
-    DigitalSensor(uint8_t analogPin, uint8_t fieldID);
-
-    uint8_t getFieldID();
+    /**
+     * Constructor, creates an instance of a DigitalSensor
+     * 
+     * @param analogPin: The analog pin of the sensor
+     * @param fieldID: The thingspeak field ID of the host
+     */
+    DigitalSensor(uint8_t digitalPin);
     virtual float getNormalizedSensorValue() {};
 };
 

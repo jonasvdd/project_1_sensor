@@ -26,7 +26,7 @@ private:
      * @param maxTime The maximum time
      * @param readReplay Withholds the expected response of the command
      */
-    void sendCommand(String command, int maxTime, char readReplay[]);
+    boolean sendCommand(String command, int maxTime, char readReplay[]);
 
 public:
     /**
@@ -46,7 +46,7 @@ public:
      * @param fieldID
      * @param sensorValue
      */
-    void sendSensorValue(uint8_t fieldID, String sensorValue);
+    void sendSensorValue(String fieldString);
 };
 
 #endif //PROJECT_1_SENSOR_THINGSPEAKHELPER_H

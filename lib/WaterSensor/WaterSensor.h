@@ -6,8 +6,7 @@
 // Representation of a water sensor
 class WaterSensor : public DigitalSensor {
 public:
-    WaterSensor(uint8_t analogPin, uint8_t fieldID) : DigitalSensor(analogPin, fieldID) {}
-
+    WaterSensor(uint8_t analogPin) : DigitalSensor(analogPin) {}
     float getNormalizedSensorValue();
 };
 
