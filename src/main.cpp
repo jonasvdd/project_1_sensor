@@ -48,34 +48,32 @@ using namespace std;
 const String WRITE_KEY = "R9Z4V5ONGV65YVFT";
 const String SSID = "Y5070AP";
 const String PASS = "ArduinoUno";
+ThingSpeakHelper * apiHelper;
 
-// The sensors
-ThingSpeakHelper *apiHelper;
-
-std::map<int, Sensor> sensorDict;
+std::map<int, Sensor *> sensorDict;
 
 void setup() {
     Serial.begin(_baudrate);
 
     // create the thingspeak helper
-    apiHelper = new ThingSpeakHelper(RX, TX, WRITE_KEY, SSID, PASS);
+   apiHelper = new ThingSpeakHelper(RX, TX, WRITE_KEY, SSID, PASS);
 
     // initialize the sensor dict
-    BMP185 * bmp = new BMP185();
-    sensorDict[BMP_PRESSURE_ID] = * bmp->getPressureSensor();
-    sensorDict[BMP_ALTITUDE_ID] = * bmp->getAltitudeSensor();
-    sensorDict[BMP_TEMPERATURE_ID] = * bmp->getTemperatureSensor();
-    sensorDict[LDR_ID] = * new LDR(LDR_PIN);
-    sensorDict[SMOKE_ID] = * new Smoke(SMOKE_PIN, BUZZER_PIN);
-    sensorDict[WATERSENSOR_ID] = * new WaterSensor(WATERSENSOR_PIN);
-    sensorDict[DHT_ID] = * new DHTSensor(DHT_PIN);
+    auto * bmp = new BMP185();
+    sensorDict[BMP_PRESSURE_ID] = bmp->getPressureSensor();
+    sensorDict[BMP_ALTITUDE_ID] = bmp->getAltitudeSensor();
+    sensorDict[BMP_TEMPERATURE_ID] = bmp->getTemperatureSensor();
+    sensorDict[LDR_ID]  = new LDR(LDR_PIN);
+    sensorDict[SMOKE_ID] = new Smoke(SMOKE_PIN, BUZZER_PIN);
+    sensorDict[WATERSENSOR_ID] = new WaterSensor(WATERSENSOR_PIN);
+    sensorDict[DHT_ID] = new DHTSensor(DHT_PIN);
 }
 
 
 void loop() {
     String datastring = "";
-    for (pair<int, Sensor> element : sensorDict) {
-        datastring +="&field" +  String(element.first) + "=" + String(element.second.getNormalizedSensorValue());
+    for (pair<int, Sensor *> element : sensorDict) {
+        datastring +="&field" +  String(element.first) + "=" + String(element.second->getNormalizedSensorValue());
     }
-    Serial.println(datastring);
+    apiHelper->sendSensorValue(datastring);
 }
