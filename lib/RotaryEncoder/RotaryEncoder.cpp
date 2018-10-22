@@ -1,34 +1,40 @@
 #include "RotaryEncoder.h"
 
-RotaryEncoder::RotaryEncoder(uint8_t pinA, uint8_t pinB) {
+uint8_t pinA;
+uint8_t pinB;
+uint8_t counter = 0;
+uint8_t aState;
+uint8_t aLastState;
+
+RotaryEncoder::RotaryEncoder(uint8_t pina, uint8_t pinb) {
     // assign the pins and set them to input
-    this->pinA = pinA;
-    this->pinB = pinB;
+    pinA = pina;
+    pinB = pinb;
 
-    pinMode(this->pinA, INPUT);
-    pinMode(this->pinB, INPUT);
+    pinMode(pinA, INPUT);
+    pinMode(pinB, INPUT);
 
-    this->aLastState = digitalRead(pinA);
-    attachInterrupt(digitalPinToInterrupt(this->pinA), this->rotate, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(this->pinB), this->rotate, CHANGE);
+    aLastState = digitalRead(pinA);
+    attachInterrupt(digitalPinToInterrupt(pinA), rotate_, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(pinB), rotate_, CHANGE);
 }
 
-void RotaryEncoder::rotate() {
-    this->aState = digitalRead(this->pinA);
+void rotate_() {
+    aState = digitalRead(pinA);
 
-    if (this->aState != this->aLastState) {
-        if (digitalRead(this->pinB) != this->aState) {
-            this->counter++;
-        } else if (this->counter > 0) {
-            this->counter--;
+    if (aState != aLastState) {
+        if (digitalRead(pinB) != aState) {
+            counter++;
+        } else if (counter > 0) {
+            counter--;
         }
     }
-    Serial.println("rotary counter: " + this->counter);
-    this->aLastState = aState;
+    Serial.println("rotary counter: " + counter);
+    aLastState = aState;
 }
 
 float RotaryEncoder::getNormalizedSensorValue() {
-    return this->counter;
+    return counter;
 }
 
 

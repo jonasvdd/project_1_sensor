@@ -14,15 +14,6 @@
 // for easier life
 using namespace std;
 
-// Template for casting stuff to string
-template<typename T>
-string toString(const T& value)
-{
-    std::ostringstream oss;
-    oss << value;
-    return oss.str();
-}
-
 // HW serial
 #define _baudrate 9600
 
@@ -43,7 +34,7 @@ string toString(const T& value)
 #define SMOKE_ID            5
 
 // WATER SENSOR
-#define WATERSENSOR_PIN     12
+#define WATERSENSOR_PIN     13
 #define WATERSENSOR_ID      6
 
 // DHT SENSOR
@@ -59,7 +50,7 @@ string toString(const T& value)
  *         ACTUATORS
  ******************************/
 // BUZZER
-#define BUZZER_PIN          13
+#define BUZZER_PIN          12
 
 // RGB LED
 #define RED_PIN             5
@@ -67,18 +58,18 @@ string toString(const T& value)
 #define GREEN_PIN           7
 
 // ESP 2866 WIFI
-#define RX                  10   // connect this ping to the TX pin of the esp8266
-#define TX                  11   // connect this ping to the RX pin of the esp8266
+#define RX                  4   // connect this ping to the TX pin of the esp8266
+#define TX                  3   // connect this ping to the RX pin of the esp8266
 
 // API calls
-const String WRITE_KEY =    "R9Z4V5ONGV65YVFT";
-const String SSID =         "Y5070AP";
-const String PASS =         "ArduinoUno";
+const String WRITE_KEY = "R9Z4V5ONGV65YVFT";
+const String SSID = "Y5070AP";
+const String PASS = "ArduinoUno";
 
 // some global variables
 ThingSpeakHelper *apiHelper;
-RotaryEncoder * rotaryEncoder;
-RGBLed * rgbLed;
+RotaryEncoder *rotaryEncoder;
+RGBLed *rgbLed;
 // dictionary which will store all our sensors whom will monitor data and send to the Thingspeak API
 std::map<int, Sensor *> sensorDict;
 
@@ -87,7 +78,7 @@ void setup() {
     Serial.begin(_baudrate);
 
     // initialize the rotary encoder and RGB LED and thingspeak helper
-    rotaryEncoder = new RotaryEncoder(ROTARY_PIN_A, ROTARY_PIN_B);
+    //rotaryEncoder = new RotaryEncoder(ROTARY_PIN_A, ROTARY_PIN_B);
     rgbLed = new RGBLed(ANODE, RED_PIN, GREEN_PIN, BLUE_PIN);
     apiHelper = new ThingSpeakHelper(rgbLed, RX, TX, WRITE_KEY, SSID, PASS);
 
@@ -110,7 +101,7 @@ void loop() {
     apiHelper->sendSensorValue(datastring);
 
     // delay the update loop
-    uint32_t delayTime = int32_t(rotaryEncoder->getNormalizedSensorValue()) * uint32_t(UPDATE_FACTOR_MS);
+    uint32_t delayTime = 100; // int32_t(rotaryEncoder->getNormalizedSensorValue()) * uint32_t(UPDATE_FACTOR_MS);
     Serial.print("waiting for ");
     Serial.print(delayTime);
     Serial.println(" ms!");

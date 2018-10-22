@@ -9,17 +9,12 @@
  */
 class RotaryEncoder : public Sensor{
 private:
-    uint8_t pinA;
-    uint8_t pinB;
-    uint8_t counter = 0;
-    uint8_t aState;
-    uint8_t aLastState;
 public:
     RotaryEncoder(uint8_t pinA, uint8_t pinB);
-
     float getNormalizedSensorValue();
-    void rotate();
 };
+
+void rotate_();
 
 
 #endif //PROJECT_1_SENSOR_ROTARYENCODER_H

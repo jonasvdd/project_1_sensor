@@ -14,7 +14,7 @@ public:
     }
 
     float getHumidity(){
-        int chk = this->DHT.read11(this->pin);
+        this->DHT.read11(this->pin);
         return this->DHT.humidity;
     }
 

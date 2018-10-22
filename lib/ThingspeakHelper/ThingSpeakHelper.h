@@ -4,6 +4,10 @@
 #include "SoftwareSerial.h"
 #include "RGBLed.h"
 #include "Arduino.h"
+#include "sstream"
+#include "string"
+
+using namespace std;
 
 
 /***********************************
