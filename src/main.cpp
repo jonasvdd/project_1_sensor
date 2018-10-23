@@ -46,6 +46,7 @@ using namespace std;
 #define ROTARY_PIN_B        3
 #define UPDATE_FACTOR_MS    50
 
+
 /*******************************
  *         ACTUATORS
  ******************************/

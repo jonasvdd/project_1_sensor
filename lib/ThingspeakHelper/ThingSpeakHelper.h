@@ -17,14 +17,19 @@ using namespace std;
 #define PORT                    80
 #define LED_UPDATE_TIME_MS      500
 
+/**
+ * Representation of a class with a sh*tload of helper
+ * functions to bring a smile on your heart when working with
+ * the ThingSpeak API.
+ */
 class ThingSpeakHelper {
 private:
-    String API_key;
-    String SSID;
-    String PASS;
-    int countTruecommand = 0;
-    SoftwareSerial *esp8266;
-    RGBLed *rgbLed;
+    String API_key;                 // The API write key
+    String SSID;                    // Network SSID
+    String PASS;                    // Network password
+    int countTruecommand = 0;       // number of successfull consecutive commands executed
+    SoftwareSerial *esp8266;        // Instance of a serial connection
+    RGBLed *rgbLed;                 // To display status
 
     /**
      * Sends a command to an ESP8266 Wifi module
@@ -50,9 +55,11 @@ public:
 
 
     /**
-     * Sends
-     * @param fieldID
-     * @param sensorValue
+     * Sends the field string to the corresponding thingspeak channel
+     *
+     * @param fieldString The string which can witthold sensor values for multiple
+     *      fields. Hence less calls must be made and the application can be more
+     *      efficient.
      */
     void sendSensorValue(String fieldString);
 };

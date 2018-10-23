@@ -20,6 +20,11 @@ public:
      * @param analogPin: The analog pin of the sensor
      */
     AnalogSensor(uint8_t analogPin);
+
+    /**
+     * Abstract method which returns the Sensor value,
+     * Will be implemented in the subclasses
+     */
     virtual float getNormalizedSensorValue() {};
 };
 

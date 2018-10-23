@@ -20,6 +20,7 @@ public:
         pinMode(this->buzzerPin, OUTPUT);
     }
 
+    // Getters
     float getNormalizedSensorValue();
     bool isSmokePresent();
 };

@@ -20,6 +20,11 @@ public:
      * @param fieldID: The thingspeak field ID of the host
      */
     DigitalSensor(uint8_t digitalPin);
+
+    /**
+     * @return Abstract method which will be further specified
+     * in derived classes
+     */
     virtual float getNormalizedSensorValue() {};
 };
 

@@ -1,8 +1,9 @@
 #include "RotaryEncoder.h"
 
+// Variables used by the static method
 uint8_t pinA;
 uint8_t pinB;
-uint8_t counter = 0;
+uint16_t counter = 0;
 uint8_t aState;
 uint8_t aLastState;
 
