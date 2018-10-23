@@ -1,5 +1,3 @@
-// Created by jonas on 09/10/18.
-
 #include "LDR.h"
 
 

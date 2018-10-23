@@ -1,33 +1,34 @@
 #ifndef PROJECT_1_SENSOR_BMP185_H
 #define PROJECT_1_SENSOR_BMP185_H
 
-#include "Wire.h"
-#include "Adafruit_Sensor.h"
 #include "Adafruit_BMP085_U.h"
-#include "Arduino.h"
 #include "Sensor.h"
 
 // ANALOG 5 and analog 4
-
 #define SEA_LEVEL_PRESSURE_HPA 1020 /*IN hPa*/
 // Todo: find an API which returns the sea level height of the corresponding location.
 
+/**
+ * Representation of the BMP185 and the BMP085 class.
+ */
 class BMP185 {
 private:
+    Adafruit_BMP085_Unified * bmp;
+public:
+    // constructor
+    BMP185();
+
+    // since a BMP withholds 3 (pressure, temperature and
+    // altitude derived from those)
+    // three Sensor objects will be created
     Sensor * altitudeSensor;
     Sensor * pressureSensor;
     Sensor * temperatureSensor;
-    Adafruit_BMP085_Unified * bmp;
-public:
-    BMP185();
 
+    // getters
     float getTemperature();
     float getPressure();
     float getAltitude();
-
-    Sensor * getAltitudeSensor();
-    Sensor * getPressureSensor();
-    Sensor * getTemperatureSensor();
 };
 
 #endif //PROJECT_1_SENSOR_BMP180_H

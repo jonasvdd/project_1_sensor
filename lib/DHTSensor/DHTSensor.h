@@ -4,20 +4,30 @@
 #include "dht.h"
 #include "Sensor.h"
 
+/**
+ * Representation of the humidity sensor part from a DHT sensor
+ */
 class DHTSensor : public Sensor {
 private:
     uint8_t pin;
     dht DHT;
 public:
+    // Constructor
     DHTSensor(uint8_t pin){
         this->pin = pin;
     }
 
+    /**
+     * @return The relative humidity
+     */
     float getHumidity(){
-        int chk = this->DHT.read11(this->pin);
+        this->DHT.read11(this->pin);
         return this->DHT.humidity;
     }
 
+    /**
+     * @return Concrete implementation of the abstract method
+     */
     float getNormalizedSensorValue() {
         return this->getHumidity();
     }

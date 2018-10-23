@@ -11,7 +11,7 @@ class DigitalSensor : public Sensor {
 private:
     uint8_t pin;
 protected:
-    uint8_t getSensorValue();
+    uint16_t getSensorValue();
 public:
     /**
      * Constructor, creates an instance of a DigitalSensor
@@ -20,6 +20,11 @@ public:
      * @param fieldID: The thingspeak field ID of the host
      */
     DigitalSensor(uint8_t digitalPin);
+
+    /**
+     * @return Abstract method which will be further specified
+     * in derived classes
+     */
     virtual float getNormalizedSensorValue() {};
 };
 

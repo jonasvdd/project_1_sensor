@@ -11,6 +11,9 @@ float Smoke::getNormalizedSensorValue() {
     if (this->smoke_present) {
         digitalWrite(this->buzzerPin, HIGH);
     }
+    else {
+        digitalWrite(this->buzzerPin, LOW);
+    }
     return sensorVal;
 }
 

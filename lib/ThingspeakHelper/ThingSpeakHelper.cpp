@@ -1,22 +1,24 @@
 #include "ThingSpeakHelper.h"
-// todo led library
+
 
 /***********************************
  *          CONSTRUCTOR
  **********************************/
-ThingSpeakHelper::ThingSpeakHelper(uint8_t RX, uint8_t TX, String API_key, String SSID, String PASS) {
-    // todo include led.h
+ThingSpeakHelper::ThingSpeakHelper(RGBLed *rgbLed, uint8_t RX, uint8_t TX, String API_key, String SSID, String PASS) {
+    this->rgbLed = rgbLed;
     this->API_key = API_key;
-
+    this->SSID = SSID;
+    this->PASS = PASS;
     this->esp8266 = new SoftwareSerial(RX, TX);
+    this->rgbLed->blink(Color(100, 100, 100), 300);
     esp8266->begin(9600);
-    sendCommand("AT", 5, "OK");             // see if we get an OK response
-    sendCommand("AT+CWMODE=1", 5, "OK");    // static mode
-    boolean connected = sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 20, "OK");
-    while (!connected){
-        // todo: blink the RGB LED orange
+    sendCommand("AT", 5, "OK");                         // see if we get an OK response
+    sendCommand("AT+CWMODE=1", 5, "OK");                // static mode
+    boolean connected = sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 15, "OK");
+    while (!connected) {
+        this->rgbLed->blink(Color(100, 10, 0),400);       // ORANGE
         Serial.println("Trying to connect ...");
-        connected = sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 20, "OK");    // connect to access point
+        sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 5, "OK");    // connect to access point
     }
 }
 
@@ -26,29 +28,29 @@ ThingSpeakHelper::ThingSpeakHelper(uint8_t RX, uint8_t TX, String API_key, Strin
  **********************************/
 boolean ThingSpeakHelper::sendCommand(String command, int maxTime, char readReplay[]) {
     Serial.print(this->countTruecommand);
+    Serial.print(".\tcommand: " + command);
     boolean found = false;
     int countTimeCommand = 0;
-    while (this->countTimeCommand < (maxTime * 1)) {
-        this->esp8266->println(command); //at+cipsend
-        if (this->esp8266->find(readReplay))//ok
+    while (countTimeCommand < (maxTime * 1)) {
+        this->esp8266->println(command);                //at+cipsend
+        if (this->esp8266->find(readReplay))            //ok
         {
             found = true;
             break;
         }
-        this->countTimeCommand++;
+        countTimeCommand++;
     }
 
-    Serial.print(".\tcommand: " + command);
     if (found) {
         Serial.println(" OK");
         this->countTruecommand++;
-        // blink led green
-        return false;
+        this->rgbLed->blink(Color(0, 50, 0), 30);           // GREEN --> OK
+        return true;
     } else {
         Serial.println(" Fail");
         this->countTruecommand = 0;
-        // blink led orange
-        return true;
+        this->rgbLed->blink(Color(100, 0, 0), 200);           // RED --> OK
+        return false;
     }
 }
 
@@ -57,13 +59,22 @@ boolean ThingSpeakHelper::sendCommand(String command, int maxTime, char readRepl
  *          PUBLIC METHODS
  **********************************/
 void ThingSpeakHelper::sendSensorValue(String fieldString) {
-    // String getData = "GET /update?api_key=" + this->API_key + "&field" + String(fieldID) + "=" + sensorValue;
-    String getData = "GET /update?api_key=" + this->API_key + fieldString;
     sendCommand("AT+CIPMUX=1", 5, "OK");
-    sendCommand("AT+CIPSTART=0,\"TCP\",\"" + String(ROOT_URL) + "\"," + String(PORT), 5, "OK");
-    sendCommand("AT+CIPSEND=0," + String(getData.length() + 4), 10, ">");
-    esp8266->println(getData);
-    Serial.println("request: " + getData);
-    this->countTruecommand++;
-    sendCommand("AT+CIPCLOSE=0", 10, "OK");
+    if (sendCommand("AT+CIPSTART=0,\"TCP\",\"" + String(ROOT_URL) + "\"," + String(PORT), 5, "OK")){
+        String getData = "GET /update?api_key=" + this->API_key;
+        getData += fieldString;
+
+        String command = "AT+CIPSEND=0,";
+        command +=  String(getData.length() + 4);
+        sendCommand(command, 10, ">");
+
+        // String getData = "GET /update?api_key=" + this->API_key + "&field" + String(fieldID) + "=" + sensorValue;
+        esp8266->println(getData);
+        Serial.println(getData);
+        this->countTruecommand++;
+        sendCommand("AT+CIPCLOSE=0", 10, "OK");
+    } else {
+        Serial.println("Could not make an TCP connection with thingspeak, sorry bro!!");
+        sendCommand("AT+CWJAP=\"" + this->SSID + "\",\"" + this->PASS + "\"", 15, "OK");    // connect to access point
+    }
 }
