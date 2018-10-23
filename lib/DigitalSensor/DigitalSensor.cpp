@@ -7,6 +7,6 @@ DigitalSensor::DigitalSensor(uint8_t digitalPin) {
 }
 
 
-uint8_t DigitalSensor::getSensorValue() {
-    return uint8_t(digitalRead(this->pin));
+uint16_t DigitalSensor::getSensorValue() {
+    return uint16_t(digitalRead(this->pin));
 }

@@ -28,8 +28,9 @@ void rotate_() {
         } else if (counter > 0) {
             counter--;
         }
+        Serial.print("rotary counter: ");
+        Serial.println(counter);
     }
-    Serial.println("rotary counter: " + counter);
     aLastState = aState;
 }
 

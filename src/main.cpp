@@ -44,7 +44,7 @@ using namespace std;
 // ROTARY ENCODER
 #define ROTARY_PIN_A        2
 #define ROTARY_PIN_B        3
-#define UPDATE_FACTOR_MS    100
+#define UPDATE_FACTOR_MS    50
 
 /*******************************
  *         ACTUATORS
@@ -53,13 +53,13 @@ using namespace std;
 #define BUZZER_PIN          12
 
 // RGB LED
-#define RED_PIN             5
-#define BLUE_PIN            6
-#define GREEN_PIN           7
+#define RED_PIN             9
+#define BLUE_PIN            10
+#define GREEN_PIN           11
 
 // ESP 2866 WIFI
-#define RX                  4   // connect this ping to the TX pin of the esp8266
-#define TX                  3   // connect this ping to the RX pin of the esp8266
+#define RX                  6   // connect this ping to the TX pin of the esp8266
+#define TX                  7   // connect this ping to the RX pin of the esp8266
 
 // API calls
 const String WRITE_KEY = "R9Z4V5ONGV65YVFT";
@@ -78,8 +78,8 @@ void setup() {
     Serial.begin(_baudrate);
 
     // initialize the rotary encoder and RGB LED and thingspeak helper
-    //rotaryEncoder = new RotaryEncoder(ROTARY_PIN_A, ROTARY_PIN_B);
-    rgbLed = new RGBLed(ANODE, RED_PIN, GREEN_PIN, BLUE_PIN);
+    rotaryEncoder = new RotaryEncoder(ROTARY_PIN_A, ROTARY_PIN_B);
+    rgbLed = new RGBLed(CATHODE, RED_PIN, GREEN_PIN, BLUE_PIN);
     apiHelper = new ThingSpeakHelper(rgbLed, RX, TX, WRITE_KEY, SSID, PASS);
 
     // initialize the BMP and the sensor dict
@@ -101,7 +101,7 @@ void loop() {
     apiHelper->sendSensorValue(datastring);
 
     // delay the update loop
-    uint32_t delayTime = 100; // int32_t(rotaryEncoder->getNormalizedSensorValue()) * uint32_t(UPDATE_FACTOR_MS);
+    uint32_t delayTime = int32_t(rotaryEncoder->getNormalizedSensorValue()) * uint32_t(UPDATE_FACTOR_MS);
     Serial.print("waiting for ");
     Serial.print(delayTime);
     Serial.println(" ms!");

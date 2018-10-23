@@ -12,7 +12,7 @@ class AnalogSensor : public Sensor  {
 private:
     uint8_t pin;
 protected:
-    uint8_t getSensorValue();
+    uint16_t getSensorValue();
 public:
     /**
      * Constructor, creates an instance of an AnalogSensor

@@ -20,6 +20,8 @@ using namespace std;
 class ThingSpeakHelper {
 private:
     String API_key;
+    String SSID;
+    String PASS;
     int countTruecommand = 0;
     SoftwareSerial *esp8266;
     RGBLed *rgbLed;

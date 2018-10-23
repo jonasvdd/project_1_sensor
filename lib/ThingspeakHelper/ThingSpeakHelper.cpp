@@ -7,17 +7,19 @@
 ThingSpeakHelper::ThingSpeakHelper(RGBLed *rgbLed, uint8_t RX, uint8_t TX, String API_key, String SSID, String PASS) {
     this->rgbLed = rgbLed;
     this->API_key = API_key;
+    this->SSID = SSID;
+    this->PASS = PASS;
     this->esp8266 = new SoftwareSerial(RX, TX);
+    this->rgbLed->blink(Color(100, 100, 100), 300);
     esp8266->begin(9600);
     sendCommand("AT", 5, "OK");                         // see if we get an OK response
     sendCommand("AT+CWMODE=1", 5, "OK");                // static mode
-    boolean connected = sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 10, "OK");
+    boolean connected = sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 15, "OK");
     while (!connected) {
-        this->rgbLed->blink(Color(100, 50, 0), 500);       // ORANGE
+        this->rgbLed->blink(Color(100, 10, 0),400);       // ORANGE
         Serial.println("Trying to connect ...");
-        connected = sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 30, "OK");    // connect to access point
+        sendCommand("AT+CWJAP=\"" + SSID + "\",\"" + PASS + "\"", 5, "OK");    // connect to access point
     }
-    this->rgbLed->blink(Color(0, 100, 0), 500);         // GREEN
 }
 
 
@@ -42,12 +44,12 @@ boolean ThingSpeakHelper::sendCommand(String command, int maxTime, char readRepl
     if (found) {
         Serial.println(" OK");
         this->countTruecommand++;
-        rgbLed->blink(Color(0, 120, 0), 300);           // GREEN --> OK
+        this->rgbLed->blink(Color(0, 50, 0), 30);           // GREEN --> OK
         return true;
     } else {
         Serial.println(" Fail");
         this->countTruecommand = 0;
-        rgbLed->blink(Color(100, 0, 0), 300);         // RED --> OK
+        this->rgbLed->blink(Color(100, 0, 0), 200);           // RED --> OK
         return false;
     }
 }
@@ -73,5 +75,6 @@ void ThingSpeakHelper::sendSensorValue(String fieldString) {
         sendCommand("AT+CIPCLOSE=0", 10, "OK");
     } else {
         Serial.println("Could not make an TCP connection with thingspeak, sorry bro!!");
+        sendCommand("AT+CWJAP=\"" + this->SSID + "\",\"" + this->PASS + "\"", 15, "OK");    // connect to access point
     }
 }

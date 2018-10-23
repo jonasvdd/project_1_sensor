@@ -7,6 +7,6 @@ AnalogSensor::AnalogSensor(uint8_t analogPin) {
 }
 
 
-uint8_t AnalogSensor::getSensorValue() {
-    return uint8_t(analogRead(this->pin));
+uint16_t AnalogSensor::getSensorValue() {
+    return uint16_t(analogRead(this->pin));
 }

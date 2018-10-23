@@ -3,7 +3,7 @@
 
 #include "AnalogSensor.h"
 
-#define SMOKE_THRESHOLD 100 // TODO 
+#define SMOKE_THRESHOLD 250 // TODO
 
 /**
  * Representation of the smoke sensor,
